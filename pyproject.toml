@@ -1,0 +1,43 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[project]
+name = "rdai-ai-in-prod"
+version = "1.0.0"
+description = "Red Dragon's AI In Production Course Project."
+authors = [ 
+    {name = "Ng Jian Ming", email = "ngjianming93@gmail.com"} 
+]
+maintainers = [ 
+    {name = "Ng Jian Ming", email = "ngjianming93@gmail.com"} 
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+readme = "README.md"
+license = { file = "License" }
+dynamic = ["version"] 
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.109.0"
+pydantic = "^2.6.0"
+uvicorn = "^0.27.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+ruff = "^0.1.15"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.0.0"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.5.3"
+
+
+[tool.ruff]
+target-version = "py310"

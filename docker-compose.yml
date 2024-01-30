@@ -1,0 +1,61 @@
+version: '3.9'
+
+services:
+  frontend:
+    container_name: frontend 
+    image: frontend:1.0.0
+    build:
+      context: frontend/
+      dockerfile: Dockerfile
+    networks:
+      - rdai-ai-in-prod-network
+  
+  backend:
+    container_name: backend
+    image: backend:1.0.0
+    build:
+      context: backend/
+      dockerfile: Dockerfile
+    expose:
+      - 9090
+    networks:
+      - rdai-ai-in-prod-network
+
+  model-server:
+    container_name: model-server
+    image: model-server:1.0.0
+    build: 
+      context: model-server
+      dockerfile: Dockerfile
+      args:
+        TRITON_VERSION: 24.01
+        TRITON_BACKEND: vllm
+        MODEL_URL: TheBloke/Mixtral-8x7B-Instruct-v0.1-GPTQ
+        REVISION: null
+    networks:
+      - rdai-ai-in-prod-network
+
+  vector-store:
+    image: chromadb/chroma:0.4.22
+    expose:
+      - 8000
+    networks:
+      - rdai-ai-in-prod-network
+
+  database:
+    image: postgres:16.1
+    expose:
+      - 5432
+    networks:
+      - rdai-ai-in-prod-network
+
+  adminer:
+    image: adminer:4.8.1
+    expose:
+      - 8080
+    networks:
+      - rdai-ai-in-prod-network
+
+networks:
+  rdai-ai-in-prod-network:
+    driver: bridge
