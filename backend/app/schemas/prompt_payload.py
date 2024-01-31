@@ -7,7 +7,8 @@ class MandatoryPromptPayload(BaseModel):
     template: StrictStr
 
 class PromptPayload(MandatoryPromptPayload, extra=Extra.allow):
+    "Payload for prompt"
 
 
-class PromptResponse(MandatoryPromptPayload, PromptPayload, extra=Extra.allow):
+class PromptResponse(PromptPayload):
     result: StrictStr

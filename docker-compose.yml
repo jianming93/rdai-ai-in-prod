@@ -2,29 +2,40 @@ version: '3.9'
 
 services:
   frontend:
-    container_name: frontend 
     image: frontend:1.0.0
     build:
       context: frontend/
       dockerfile: Dockerfile
+      args:
+        - GRADIO_SERVER_PORT=7070
+    environment:
+      - BACKEND_URL=http://backend
+      - BACKEND_PORT=9090
+      - BACKEND_PROMPT_PATH=/prompt
+    expose:
+      - 7070
+    ports:
+      - 7070:7070
     networks:
       - rdai-ai-in-prod-network
-  
+
   backend:
-    container_name: backend
     image: backend:1.0.0
     build:
       context: backend/
       dockerfile: Dockerfile
+      args:
+        - FASTAPI_SERVER_PORT=9090
     expose:
       - 9090
+    ports:
+      - 9090:9090
     networks:
       - rdai-ai-in-prod-network
 
   model-server:
-    container_name: model-server
     image: model-server:1.0.0
-    build: 
+    build:
       context: model-server
       dockerfile: Dockerfile
       args:

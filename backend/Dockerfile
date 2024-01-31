@@ -1,20 +1,28 @@
 FROM python:3.10.13-slim
 
+ARG FASTAPI_SERVER_PORT=9090
+
 # Poetry's configuration:
-ENV POETRY_NO_INTERACTION=1 \
-  POETRY_VIRTUALENVS_CREATE=false \
-  POETRY_CACHE_DIR='/var/cache/pypoetry' \
-  POETRY_HOME='/usr/local' \
-  POETRY_VERSION=1.7.1
+ENV POETRY_VIRTUALENVS_CREATE=false \
+    POETRY_VIRTUALENVS_IN_PROJECT=false \
+    POETRY_CACHE_DIR='/var/cache/pypoetry' \
+    POETRY_HOME='/opt/poetry' \
+    POETRY_VERSION=1.7.1 \
+    UVICORN_PORT=${FASTAPI_SERVER_PORT}
 
+# System deps:
+RUN apt-get update \
+  && apt-get install curl -y \
+  && curl -sSL https://install.python-poetry.org | python3 -
+
+ENV PATH="$POETRY_HOME/bin:$PATH"
+
+# Copy only requirements to cache them in docker layer
 WORKDIR /app
+COPY poetry.lock pyproject.toml /app/
 
-RUN curl -sSL https://install.python-poetry.org | python3 -
-COPY pyproject.toml .
+RUN poetry install --no-dev
 
-RUN poetry install --only-root
+COPY /app/ /app/
 
-COPY . . 
-
-# ENTRYPOINT [ "poetry" ]
-CMD [ "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9090" ]
+CMD [ "poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0" ]
