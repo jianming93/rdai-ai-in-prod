@@ -6,7 +6,7 @@ app = FastAPI()
 
 @app.get("/")
 async def welcome():
-    return {"message": "Welcome to RDAI AI In Production API!"}
+    return {"message": "Welcome to RDAI AI In Production Backend!"}
 
 
 @app.post("/prompt")

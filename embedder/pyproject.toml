@@ -3,35 +3,38 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [project]
-name = "rdai-ai-in-prod-frontend"
+name = "rdai-ai-in-prod-embedder"
 version = "1.0.0"
-description = "Frontend for Red Dragon's AI In Production Course Project using Gradio."
-authors = [
-    {name = "Ng Jian Ming", email = "ngjianming93@gmail.com"}
+description = "Simple embedder endpoint served on FastAPI for Red Dragon's AI In Production Course Project."
+authors = [ 
+    {name = "Ng Jian Ming", email = "ngjianming93@gmail.com"} 
 ]
-maintainers = [
-    {name = "Ng Jian Ming", email = "ngjianming93@gmail.com"}
+maintainers = [ 
+    {name = "Ng Jian Ming", email = "ngjianming93@gmail.com"} 
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
 ]
 readme = "README.md"
 license = { file = "License" }
-dynamic = ["version"]
+dynamic = ["version"] 
 
 [tool.poetry]
-name = "rdai-ai-in-prod-frontend"
+name = "rdai-ai-in-prod-embedder"
 version = "1.0.0"
-description = "Frontend for Red Dragon's AI In Production Course Project using Gradio."
-authors = [
+description = "Simple embedder endpoint served on FastAPI for Red Dragon's AI In Production Course Project."
+authors = [ 
     "Ng Jian Ming"
 ]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-gradio = "^4.16.0"
+fastapi = "^0.109.0"
 pydantic = "^2.6.0"
-PyYAML = "^6.0.1"
+uvicorn = "^0.27.0"
+torch = "^2.2.0"
+transformers = "^4.37.2"
+
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.0"

@@ -32,17 +32,32 @@ services:
       - 9090:9090
     networks:
       - rdai-ai-in-prod-network
+  
+  embedder:
+    image: embedder:1.0.0
+    build:
+      context: embedder
+      dockerfile: Dockerfile
+    environment:
+      - EMBEDDER_MODEL=BAAI/bge-large-zh-v1.5
+      - UVICORN_PORT=6060
+    expose:
+      - 6060
+    network:
+      - rdai-ai-in-prod-network
 
   model-server:
-    image: model-server:1.0.0
-    build:
-      context: model-server
-      dockerfile: Dockerfile
-      args:
-        TRITON_VERSION: 24.01
-        TRITON_BACKEND: vllm
-        MODEL_URL: TheBloke/Mixtral-8x7B-Instruct-v0.1-GPTQ
-        REVISION: null
+    image: nvcr.io/nvidia/tritonserver:24.01-vllm-python-py3
+    volumes:
+      - ./model-server/model_repository:/opt/tritonserver/model_repository
+    command: tritonserver --model-repository /opt/tritonserver/model_repository
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
     networks:
       - rdai-ai-in-prod-network
 
