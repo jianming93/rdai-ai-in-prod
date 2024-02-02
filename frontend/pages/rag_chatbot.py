@@ -15,9 +15,7 @@ SLEEP_TIMING = 0.1
 def slow_echo(message, history, prompt_template_filepath):
     # Post the message to backend
     prompt_template = open_contents_from_json(prompt_template_filepath)
-    logging.info(prompt_template)
     prompt_payload = convert_prompt_template_into_prompt_payload(message, prompt_template)
-    logging.info(prompt_payload)
     response = requests.post(
         f'{os.environ["BACKEND_URL"]}:{os.environ["BACKEND_PORT"]}{os.environ["BACKEND_PROMPT_PATH"]}',
         json=prompt_payload

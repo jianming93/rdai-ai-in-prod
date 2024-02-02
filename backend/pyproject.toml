@@ -6,24 +6,24 @@ build-backend = "poetry.core.masonry.api"
 name = "rdai-ai-in-prod-backend"
 version = "1.0.0"
 description = "Backend FastAPI for Red Dragon's AI In Production Course Project."
-authors = [ 
-    {name = "Ng Jian Ming", email = "ngjianming93@gmail.com"} 
+authors = [
+    {name = "Ng Jian Ming", email = "ngjianming93@gmail.com"}
 ]
-maintainers = [ 
-    {name = "Ng Jian Ming", email = "ngjianming93@gmail.com"} 
+maintainers = [
+    {name = "Ng Jian Ming", email = "ngjianming93@gmail.com"}
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
 ]
 readme = "README.md"
 license = { file = "License" }
-dynamic = ["version"] 
+dynamic = ["version"]
 
 [tool.poetry]
 name = "rdai-ai-in-prod-backend"
 version = "1.0.0"
 description = "Backend FastAPI for Red Dragon's AI In Production Course Project."
-authors = [ 
+authors = [
     "Ng Jian Ming"
 ]
 
@@ -32,6 +32,7 @@ python = "^3.10"
 fastapi = "^0.109.0"
 pydantic = "^2.6.0"
 uvicorn = "^0.27.0"
+tritonclient = {version = "^2.42.0", extras = ["all"]}
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.0"

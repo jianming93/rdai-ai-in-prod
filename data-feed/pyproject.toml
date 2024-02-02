@@ -6,32 +6,36 @@ build-backend = "poetry.core.masonry.api"
 name = "rdai-ai-in-prod-data-feed"
 version = "1.0.0"
 description = "An example data feed with embedding converter using cryptopanic for Red Dragon's AI In Production Course Project."
-authors = [ 
-    {name = "Ng Jian Ming", email = "ngjianming93@gmail.com"} 
+authors = [
+    {name = "Ng Jian Ming", email = "ngjianming93@gmail.com"}
 ]
-maintainers = [ 
-    {name = "Ng Jian Ming", email = "ngjianming93@gmail.com"} 
+maintainers = [
+    {name = "Ng Jian Ming", email = "ngjianming93@gmail.com"}
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
 ]
 readme = "README.md"
 license = { file = "License" }
-dynamic = ["version"] 
+dynamic = ["version"]
 
 [tool.poetry]
 name = "rdai-ai-in-prod-data-feed"
 version = "1.0.0"
 description = "An example data feed with embedding converter using cryptopanic for Red Dragon's AI In Production Course Project."
-authors = [ 
+authors = [
     "Ng Jian Ming"
 ]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+python-dotenv="^1.0.1"
+fastapi = "^0.109.0"
 pydantic = "^2.6.0"
 schedule = "^1.2.1"
 PyYAML = "^6.0.1"
+chromadb-client = "^0.4.22"
+tenacity = "^8.2.3"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.0"

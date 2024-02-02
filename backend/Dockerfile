@@ -1,14 +1,12 @@
 FROM python:3.10.13-slim
 
-ARG FASTAPI_SERVER_PORT=9090
 
 # Poetry's configuration:
 ENV POETRY_VIRTUALENVS_CREATE=false \
     POETRY_VIRTUALENVS_IN_PROJECT=false \
     POETRY_CACHE_DIR='/var/cache/pypoetry' \
     POETRY_HOME='/opt/poetry' \
-    POETRY_VERSION=1.7.1 \
-    UVICORN_PORT=${FASTAPI_SERVER_PORT}
+    POETRY_VERSION=1.7.1
 
 # System deps:
 RUN apt-get update \

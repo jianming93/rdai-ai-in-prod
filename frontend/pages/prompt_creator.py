@@ -1,6 +1,10 @@
 import gradio as gr
 import json
-
+import logging
+logging.basicConfig(
+    format='%(asctime)s | %(name)s | %(levelname)s | %(message)s',
+    level=logging.INFO
+)
 from utils import retrieve_prompt_templates, open_contents_from_json
 
 def reload_prompt_contents(filepath):

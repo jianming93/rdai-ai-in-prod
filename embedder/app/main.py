@@ -1,13 +1,19 @@
+import os
+import logging
+logging.basicConfig(
+    format='%(asctime)s | %(name)s | %(levelname)s | %(message)s',
+    level=logging.INFO
+)
 from fastapi import FastAPI
 from transformers import AutoTokenizer, AutoModel
 import torch
 
-from schemas.prompt_payload import EmbedderPayload, EmbedderResponse
+from schemas.embedder_payload import EmbedderPayload, EmbedderResponse
 
 app = FastAPI()
 
-tokenizer = AutoTokenizer.from_pretrained('BAAI/bge-large-zh-v1.5')
-model = AutoModel.from_pretrained('BAAI/bge-large-zh-v1.5')
+tokenizer = AutoTokenizer.from_pretrained(os.environ['EMBEDDER_MODEL'])
+model = AutoModel.from_pretrained(os.environ['EMBEDDER_MODEL'])
 model.eval()
 
 @app.get("/")
@@ -32,5 +38,5 @@ async def generate_embeddings(payload: EmbedderPayload) -> EmbedderResponse:
         # Perform pooling. In this case, cls pooling.
         sentence_embeddings = model_output[0][:, 0]
     # normalize embeddings
-    sentence_embeddings = torch.nn.functional.normalize(sentence_embeddings, p=2, dim=1)
-    return payload
+    sentence_embeddings = torch.nn.functional.normalize(sentence_embeddings, p=2, dim=1).tolist()
+    return sentence_embeddings

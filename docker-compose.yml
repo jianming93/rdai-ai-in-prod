@@ -24,30 +24,64 @@ services:
     build:
       context: backend/
       dockerfile: Dockerfile
-      args:
-        - FASTAPI_SERVER_PORT=9090
+    environment:
+      - UVICORN_PORT=9090
+      - TRITON_SERVER_MODEL_NAME=facebook/opt-125m
+      - TRITON_SERVER_URL=model-server
+      - TRITON_SERVER_PORT=8001
+      - TRITON_SERVER_VERBOSE=true
+      - TRITON_SERVER_STRAMING_MODE=true
+      - TRITON_SERVER_STREAM_TIMEOUT=120
+      - TEMPERATURE=0.1
+      - TOP_P=0.95
     expose:
       - 9090
     ports:
       - 9090:9090
     networks:
       - rdai-ai-in-prod-network
-  
-  embedder:
-    image: embedder:1.0.0
-    build:
-      context: embedder
-      dockerfile: Dockerfile
-    environment:
-      - EMBEDDER_MODEL=BAAI/bge-large-zh-v1.5
-      - UVICORN_PORT=6060
-    expose:
-      - 6060
-    network:
-      - rdai-ai-in-prod-network
+
+  # embedder:
+  #   image: embedder:1.0.0
+  #   build:
+  #     context: embedder
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - EMBEDDER_MODEL=BAAI/bge-large-zh-v1.5
+  #     - UVICORN_PORT=6060
+  #   expose:
+  #     - 6060
+  #   ports:
+  #     - 6060:6060
+  #   networks:
+  #     - rdai-ai-in-prod-network
+
+  # data-feed:
+  #   restart: on-failure:5
+  #   image: data-feed:1.0.0
+  #   build:
+  #     context: data-feed
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - REQUEST_INTERVAL=30
+  #     - CRYPTOPANIC_URL=https://cryptopanic.com/api/v1/posts
+  #     - CRYPTOPANIC_API_TOKEN=8b85ee0e4b49526154c32a7d39f4ce49c9edfbe7
+  #     - VECTOR_STORE_URL=vector-store
+  #     - VECTOR_STORE_PORT=8000
+  #   depends_on:
+  #     - vector-store
+  #     - embedder
+  #   networks:
+  #     - rdai-ai-in-prod-network
 
   model-server:
     image: nvcr.io/nvidia/tritonserver:24.01-vllm-python-py3
+    expose:
+      - 8000
+      - 8001
+    # ports:
+    #   - 8000:8000
+    #   - 8001:8001
     volumes:
       - ./model-server/model_repository:/opt/tritonserver/model_repository
     command: tritonserver --model-repository /opt/tritonserver/model_repository
@@ -65,6 +99,8 @@ services:
     image: chromadb/chroma:0.4.22
     expose:
       - 8000
+    ports:
+      - 8000:8000
     networks:
       - rdai-ai-in-prod-network
 
