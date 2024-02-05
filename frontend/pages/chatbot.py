@@ -10,7 +10,7 @@ import requests
 
 from utils import retrieve_prompt_templates, open_contents_from_json, convert_prompt_template_into_prompt_payload
 
-SLEEP_TIMING = 0.1
+SLEEP_TIMING = 0.01
 
 def slow_echo(message, history, prompt_template_filepath):
     # Post the message to backend
@@ -20,12 +20,13 @@ def slow_echo(message, history, prompt_template_filepath):
         f'{os.environ["BACKEND_URL"]}:{os.environ["BACKEND_PORT"]}{os.environ["BACKEND_PROMPT_PATH"]}',
         json=prompt_payload
     )
-    for i in range(len(response)):
+    json_response = response.json()
+    for i in range(len(json_response['result'])):
         time.sleep(SLEEP_TIMING)
-        yield response[: i+1]
+        yield json_response['result'][: i+1]
 
 with gr.Blocks(title="RAG Chatbot") as CHAT_PAGE:
-    chat_summary_markdown = gr.Markdown("Hi, I am a RAG demo chatbot for crypto content. Please feel free to ask me anything.")
+    chat_summary_markdown = gr.Markdown("Hi, I am a chatbot. Please feel free to ask me anything.")
     # Retrieve prompt templates and create dropdown
     prompts = retrieve_prompt_templates()
     with gr.Tab("Chatbot") as chatbot:

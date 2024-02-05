@@ -17,8 +17,6 @@ llmclient = LLMClient(
     triton_server_verbose=os.environ["TRITON_SERVER_VERBOSE"],
     streaming_mode=os.environ["TRITON_SERVER_STRAMING_MODE"],
     stream_timeout=os.environ["TRITON_SERVER_STREAM_TIMEOUT"],
-    temperature=os.environ["TEMPERATURE"],
-    top_p=os.environ["TOP_P"],
 )
 
 @app.get("/")
@@ -39,7 +37,12 @@ async def prompt(payload: PromptPayload) -> PromptResponse:
     """
     json_payload = payload.model_dump()
     prompt_string = format_prompt_payload(payload.model_dump())
-    output = await llmclient.run([prompt_string])
-    logging.info(output)
+    # output = await llmclient.run([prompt_string])
+    logging.info("Input string: %s" % prompt_string)
+    output = await llmclient.run([prompt_string], json_payload['config'])
+    logging.info("Generated output %s" % output)
+    # Remove template
+    output = output.replace(json_payload['template'], '')
+    logging.info("Formatted output %s" % output)
     json_payload['result'] = output
     return json_payload

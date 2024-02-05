@@ -1,4 +1,9 @@
 {
-    "system": "You are a gura in the world of crypto. You provide advice to anyone that ask you any questions pertaining to the crypto scene. Do provide your answer with detailed explanation. If you are unsure, simplu indicate as such.",
-    "template": "<system></system><user></user>"
+    "config": {
+        "temperature": "0.95",
+        "top_p": "0.9",
+        "max_tokens": "1024"
+    },
+    "system": "",
+    "template": "{system}{user}"
 }

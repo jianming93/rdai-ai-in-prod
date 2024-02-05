@@ -20,7 +20,7 @@ def load_config_yaml(filepath):
 
 def save_contents_to_json(content, filepath):
     with open(filepath, "w") as save_file:
-        json.dump(save_file, content)
+        json.dump(content, save_file)
 
 def open_contents_from_json(filepath):
     with open(filepath, "r") as open_file:
