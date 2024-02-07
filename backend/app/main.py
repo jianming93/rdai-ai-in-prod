@@ -1,9 +1,9 @@
 import os
 from fastapi import FastAPI
 import logging
+
 logging.basicConfig(
-    format='%(asctime)s | %(name)s | %(levelname)s | %(message)s',
-    level=logging.INFO
+    format="%(asctime)s | %(name)s | %(levelname)s | %(message)s", level=logging.INFO
 )
 from schemas.prompt_payload import PromptPayload, PromptResponse
 from llm_client import LLMClient
@@ -18,6 +18,7 @@ llmclient = LLMClient(
     streaming_mode=os.environ["TRITON_SERVER_STRAMING_MODE"],
     stream_timeout=os.environ["TRITON_SERVER_STREAM_TIMEOUT"],
 )
+
 
 @app.get("/")
 async def welcome():
@@ -39,10 +40,10 @@ async def prompt(payload: PromptPayload) -> PromptResponse:
     prompt_string = format_prompt_payload(payload.model_dump())
     # output = await llmclient.run([prompt_string])
     logging.info("Input string: %s" % prompt_string)
-    output = await llmclient.run([prompt_string], json_payload['config'])
+    output = await llmclient.run([prompt_string], json_payload["config"])
     logging.info("Generated output %s" % output)
     # Remove template
-    output = output.replace(json_payload['template'], '')
+    output = output.replace(json_payload["template"], "")
     logging.info("Formatted output %s" % output)
-    json_payload['result'] = output
+    json_payload["result"] = output
     return json_payload

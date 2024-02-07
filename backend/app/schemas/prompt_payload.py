@@ -6,11 +6,13 @@ class MandatoryConfigMapping(BaseModel):
     top_p: StrictStr
     max_tokens: StrictStr
 
+
 class MandatoryPromptPayload(BaseModel):
     config: MandatoryConfigMapping
     system: StrictStr
     user: StrictStr
     template: StrictStr
+
 
 class PromptPayload(MandatoryPromptPayload, extra=Extra.allow):
     "Payload for prompt"

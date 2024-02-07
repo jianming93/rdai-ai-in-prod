@@ -1,7 +1,7 @@
 import logging
+
 logging.basicConfig(
-    format='%(asctime)s | %(name)s | %(levelname)s | %(message)s',
-    level=logging.INFO
+    format="%(asctime)s | %(name)s | %(levelname)s | %(message)s", level=logging.INFO
 )
 import json
 import sys
@@ -66,7 +66,7 @@ class LLMClient:
         self.stream_timeout = float(stream_timeout)
         self._client = grpcclient.InferenceServerClient(
             url=f"{triton_server_url}:{triton_server_port}",
-            verbose=triton_server_verbose
+            verbose=triton_server_verbose,
         )
         self._loop = asyncio.get_event_loop()
         self._results_dict = {}
@@ -75,7 +75,7 @@ class LLMClient:
     async def async_request_iterator(self, prompts, sampling_parameters):
         try:
             for i, prompt in enumerate(prompts):
-                prompt_id = self.offset  + i
+                prompt_id = self.offset + i
                 self._results_dict[str(prompt_id)] = []
                 yield self.create_request(
                     prompt,
@@ -118,7 +118,7 @@ class LLMClient:
     async def run(self, prompts, sampling_parameters):
         await self.process_stream(prompts, sampling_parameters)
 
-        output = self._results_dict['0'][-1].decode()
+        output = self._results_dict["0"][-1].decode()
 
         if self.triton_server_verbose:
             logging.info("Generated output: %s" % output)
