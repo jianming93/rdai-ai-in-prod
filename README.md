@@ -151,7 +151,4 @@ all keys specified exist in the template before
 forming the prompt string to send to the LLM.
 3. Only `vllm` backend is allowed for triton.
 May be good to explore TensorRT-LLM in future.
-4. Docstrings are missing and code structure can be cleaner.
-5. Tests are missing currently.
-6. Handling of creation and editing of prompts can be cleaner.
-7.
+4. Handling of creation and editing of prompts can be cleaner.
